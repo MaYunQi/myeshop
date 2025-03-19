@@ -1,7 +1,9 @@
-package com.yunqi.myeshop.entity;
+package com.yunqi.myeshop.entity.user;
 
+import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
+@Component
 public class Account {
     private int account_id;
     private int user_id;

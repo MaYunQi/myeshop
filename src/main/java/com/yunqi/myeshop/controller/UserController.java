@@ -1,10 +1,9 @@
 package com.yunqi.myeshop.controller;
 
-import com.yunqi.myeshop.entity.User;
+import com.yunqi.myeshop.entity.user.User;
 import com.yunqi.myeshop.service.implementation.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,8 +14,8 @@ public class UserController {
     private UserServices userServices;
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userServices.getUserById(id);
+    public User getUserByUserId(@PathVariable int user_id) {
+        return userServices.getUserByUserId(user_id);
     }
     @GetMapping
     public List<User> getUsers() {
@@ -31,7 +30,7 @@ public class UserController {
         return userServices.updateUser(user);
     }
     @DeleteMapping("/{id}")
-    public int deleteUserById(@PathVariable int id) {
-        return userServices.deleteUserById(id);
+    public int deleteUserById(@PathVariable int user_id) {
+        return userServices.deleteUserByUserId(user_id);
     }
 }
