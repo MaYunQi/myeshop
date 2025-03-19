@@ -1,0 +1,10 @@
+spring:
+  data:
+    redis:
+      host: 192.168.1.131
+      password: 123456
+  datasource:
+    url: jdbc:mysql://192.168.3.3:3306/db_myeshop
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
