@@ -1,14 +1,11 @@
 package com.yunqi.myeshop.entity.user;
 
 import java.math.BigDecimal;
-import java.util.UUID;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Wallet {
     private int wallet_id;
     private int account_id;
-    private UUID wallet_uid;
+    private String wallet_uid;
     private BigDecimal balance;
 
     public int getWallet_id() {
@@ -27,11 +24,11 @@ public class Wallet {
         this.account_id = account_id;
     }
 
-    public UUID getWallet_uid() {
+    public String getWallet_uid() {
         return wallet_uid;
     }
 
-    public void setWallet_uid(UUID wallet_uid) {
+    public void setWallet_uid(String wallet_uid) {
         this.wallet_uid = wallet_uid;
     }
 
@@ -48,7 +45,7 @@ public class Wallet {
         return "Wallet{" +
                 "wallet_id=" + wallet_id +
                 ", account_id=" + account_id +
-                ", wallet_uid=" + wallet_uid +
+                ", wallet_uid='" + wallet_uid + '\'' +
                 ", balance=" + balance +
                 '}';
     }

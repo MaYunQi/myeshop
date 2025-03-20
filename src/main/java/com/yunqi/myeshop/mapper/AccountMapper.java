@@ -11,7 +11,7 @@ public interface AccountMapper {
     @Options(useGeneratedKeys = true,keyProperty = "account_id")
     int insertAccount(Account account);
 
-    @Select("SELECT  * FROM tb_accounts WHERE account_id=#{id}")
+    @Select("SELECT * FROM tb_accounts WHERE account_id=#{account_id}")
     Account getAccountByAccountId(int account_id);
 
     @Select("SELECT * FROM tb_accounts")

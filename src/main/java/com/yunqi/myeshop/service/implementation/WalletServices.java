@@ -25,7 +25,7 @@ public class WalletServices implements IWalletServices {
     }
 
     @Override
-    public Wallet getWalletByWalletUId(UUID uid) {
+    public Wallet getWalletByWalletUId(String uid) {
         return walletMapper.findWalletByWalletUId(uid);
     }
 
@@ -36,12 +36,15 @@ public class WalletServices implements IWalletServices {
 
     @Override
     public int addWallet(Wallet wallet) {
+        wallet.setWallet_uid(UUID.randomUUID().toString());
+        if(wallet.getBalance()==null){
+            wallet.setBalance(new BigDecimal(0));
+        }
         return walletMapper.insertWallet(wallet);
     }
 
     @Override
     public int updateWallet(Wallet wallet) {
-        SetWallet(wallet);
         return walletMapper.updateWallet(wallet);
     }
 
@@ -50,9 +53,4 @@ public class WalletServices implements IWalletServices {
         return walletMapper.deleteWalletByWalletId(wallet_id);
     }
 
-    private void SetWallet(Wallet wallet) {
-        BigDecimal balance = wallet.getBalance();
-        wallet=walletMapper.findWalletByWalletUId(wallet.getWallet_uid());
-        wallet.setBalance(balance);
-    }
 }

@@ -13,8 +13,8 @@ public class AccountController {
     @Autowired
     private AccountServices accountServices;
 
-    @GetMapping("/{id}")
-    public Account getAccountByAccountId(int account_id) {
+    @GetMapping("/{account_id}")
+    public Account getAccountByAccountId(@PathVariable int account_id) {
         return accountServices.getAccountByAccountId(account_id);
     }
     @GetMapping

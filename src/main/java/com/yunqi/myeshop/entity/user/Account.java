@@ -1,9 +1,7 @@
 package com.yunqi.myeshop.entity.user;
 
-import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
-@Component
 public class Account {
     private int account_id;
     private int user_id;
@@ -56,6 +54,7 @@ public class Account {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
+
     public LocalDateTime getCreated_at() {
         return created_at;
     }

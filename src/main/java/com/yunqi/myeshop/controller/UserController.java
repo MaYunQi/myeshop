@@ -1,6 +1,7 @@
 package com.yunqi.myeshop.controller;
 
 import com.yunqi.myeshop.entity.user.User;
+import com.yunqi.myeshop.service.implementation.UserAggregateServices;
 import com.yunqi.myeshop.service.implementation.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +13,10 @@ public class UserController {
 
     @Autowired
     private UserServices userServices;
+    @Autowired
+    private UserAggregateServices userAggregateServices;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{user_id}")
     public User getUserByUserId(@PathVariable int user_id) {
         return userServices.getUserByUserId(user_id);
     }

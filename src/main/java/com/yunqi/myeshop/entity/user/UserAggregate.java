@@ -1,23 +1,17 @@
 package com.yunqi.myeshop.entity.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope("session")
 public class UserAggregate {
     private User user;
     private Wallet wallet;
     private Account account;
 
-    @Autowired
+    public UserAggregate() {}
+
     public UserAggregate(User user, Wallet wallet, Account account) {
         this.user = user;
-        this.account = account;
         this.wallet = wallet;
+        this.account = account;
     }
-
     public User getUser() {
         return user;
     }

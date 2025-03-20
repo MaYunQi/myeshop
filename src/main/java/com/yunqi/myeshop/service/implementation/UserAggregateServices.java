@@ -1,6 +1,9 @@
 package com.yunqi.myeshop.service.implementation;
 
+import com.yunqi.myeshop.entity.user.Account;
+import com.yunqi.myeshop.entity.user.User;
 import com.yunqi.myeshop.entity.user.UserAggregate;
+import com.yunqi.myeshop.entity.user.Wallet;
 import com.yunqi.myeshop.service.interfaces.IUserAggregateServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,10 @@ public class UserAggregateServices implements IUserAggregateServices {
     private UserServices userServices;
     @Override
     public UserAggregate getUserAggregateByUserId(int user_id) {
-        userAggregate.setUser(userServices.getUserByUserId(user_id));
-        userAggregate.setAccount(accountServices.getAccountByUserId(user_id));
-        userAggregate.setWallet(walletServices.getWalletByAccountId(userAggregate.getAccount().getAccount_id()));
+        User user=userServices.getUserByUserId(user_id);
+        Account account=accountServices.getAccountByUserId(user_id);
+        Wallet wallet=walletServices.getWalletByAccountId(account.getAccount_id());
+        userAggregate=new UserAggregate(user,wallet,account);
         return userAggregate;
     }
 

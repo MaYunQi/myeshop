@@ -1,9 +1,7 @@
 package com.yunqi.myeshop.entity.user;
 
-import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
-@Component
 public class User {
     private int user_id;
     private String first_name;
