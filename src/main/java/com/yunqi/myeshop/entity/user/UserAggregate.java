@@ -1,9 +1,10 @@
 package com.yunqi.myeshop.entity.user;
 
 import lombok.Data;
+import java.io.Serializable;
 
 @Data
-public class UserAggregate {
+public class UserAggregate implements Serializable {
     private User user;
     private Wallet wallet;
     private Account account;

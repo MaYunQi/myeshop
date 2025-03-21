@@ -27,7 +27,7 @@ public interface AccountMapper {
     @Select("SELECT * FROM tb_accounts WHERE user_id=#{user_id}")
     Account findAccountByUserId(int user_id);
 
-    @Update("UPDATE  tb_accounts SET user_id=#{user_id},username=#{username},password_hash=#{password_hash},email=#{email}," +
+    @Update("UPDATE tb_accounts SET user_id=#{user_id},username=#{username},password_hash=#{password_hash},email=#{email}," +
             "phone_number=#{phone_number},updated_at=#{updated_at} WHERE account_id=#{account_id}")
     int updateAccount(Account account);
 

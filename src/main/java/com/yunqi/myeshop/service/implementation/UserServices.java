@@ -4,7 +4,9 @@ import com.yunqi.myeshop.entity.user.User;
 import com.yunqi.myeshop.mapper.UserMapper;
 import com.yunqi.myeshop.service.interfaces.IUserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -13,6 +15,7 @@ public class UserServices implements IUserServices {
     private UserMapper userMapper;
 
     @Override
+    //@Cacheable(key="#user_id",value = "userCache")
     public User getUserByUserId(int user_id) {
         return userMapper.findUserByUserId(user_id);
     }

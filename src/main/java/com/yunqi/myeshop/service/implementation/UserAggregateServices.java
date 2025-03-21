@@ -6,6 +6,7 @@ import com.yunqi.myeshop.entity.user.UserAggregate;
 import com.yunqi.myeshop.entity.user.Wallet;
 import com.yunqi.myeshop.service.interfaces.IUserAggregateServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,9 @@ public class UserAggregateServices implements IUserAggregateServices {
     private WalletServices walletServices;
     @Autowired
     private UserServices userServices;
+
     @Override
+    @Cacheable(key="#user_id",value = "userCache")
     public UserAggregate getUserAggregateByUserId(int user_id) {
         User user=userServices.getUserByUserId(user_id);
         Account account=accountServices.getAccountByUserId(user_id);

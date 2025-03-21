@@ -1,10 +1,19 @@
 spring:
-  data:
-    redis:
-      host: 192.168.1.131
-      password: 123456
   datasource:
     url: jdbc:mysql://192.168.3.3:3306/db_myeshop
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+  data:
+    redis:
+      host: 192.168.3.3
+      password: 123456
+      port: 6379
+      timeout: 5000
+      database: 0
+
+
