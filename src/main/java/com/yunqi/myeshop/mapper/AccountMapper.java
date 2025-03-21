@@ -12,13 +12,20 @@ public interface AccountMapper {
     int insertAccount(Account account);
 
     @Select("SELECT * FROM tb_accounts WHERE account_id=#{account_id}")
-    Account getAccountByAccountId(int account_id);
+    Account findAccountByAccountId(int account_id);
+
+    @Select("SELECT username FROM tb_accounts WHERE username=#{username}")
+    String findUsernameByUsername(String username);
+    @Select("SELECT phone_number FROM tb_accounts WHERE phone_number=#{phone_number}")
+    String findPhoneNumberByPhoneNumber(String phone_number);
+    @Select("SELECT email FROM tb_accounts WHERE email=#{email}")
+    String findEmailByEmail(String email);
 
     @Select("SELECT * FROM tb_accounts")
-    List<Account> getAllAccounts();
+    List<Account> findAllAccounts();
 
     @Select("SELECT * FROM tb_accounts WHERE user_id=#{user_id}")
-    Account getAccountByUserId(int user_id);
+    Account findAccountByUserId(int user_id);
 
     @Update("UPDATE  tb_accounts SET user_id=#{user_id},username=#{username},password_hash=#{password_hash},email=#{email}," +
             "phone_number=#{phone_number},updated_at=#{updated_at} WHERE account_id=#{account_id}")
