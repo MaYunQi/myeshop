@@ -4,6 +4,7 @@ import com.yunqi.myeshop.entity.userdto.*;
 import com.yunqi.myeshop.service.implementation.AccountServices;
 import com.yunqi.myeshop.util.ParameterValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,14 +21,15 @@ public class AccountController {
         return accountServices.getAccountByAccountId(account_id);
     }
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AccountDetailDto> getAllAccounts() {
         return accountServices.getAllAccounts();
     }
-    @PostMapping
+    @PostMapping("/register")
     public int registerAccount(@RequestBody AccountRegisterDto account) {
         if(ParameterValidator.isEmailValid(account.getEmail())
                 &&ParameterValidator.isPhoneNumberValid(account.getPhone_number())
-                &&ParameterValidator.isPasswordValid(account.getPassword_hash()))
+                &&ParameterValidator.isPasswordValid(account.getPassword()))
             return accountServices.registerAccount(account);
         return -1;
     }

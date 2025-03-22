@@ -35,7 +35,7 @@ public class RedisConfig {
                 .disableCachingNullValues();
 
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
-        cacheConfigurations.put("userCache", defaultConfig.entryTtl(Duration.ofMinutes(10)));
+        cacheConfigurations.put("accountCache", defaultConfig.entryTtl(Duration.ofMinutes(15)));
         cacheConfigurations.put("productCache", defaultConfig.entryTtl(Duration.ofHours(2)));
         cacheConfigurations.put("orderCache", defaultConfig.entryTtl(Duration.ofDays(1)));
 

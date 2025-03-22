@@ -4,6 +4,10 @@ import com.yunqi.myeshop.entity.userdto.*;
 import com.yunqi.myeshop.mapper.AccountMapper;
 import com.yunqi.myeshop.service.interfaces.IAccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -11,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AccountServices implements IAccountServices {
+public class AccountServices implements IAccountServices, UserDetailsService {
 
     @Autowired
     private AccountMapper accountMapper;
@@ -73,8 +77,8 @@ public class AccountServices implements IAccountServices {
      */
     @Override
     public int registerAccount(AccountRegisterDto account) {
-        String encryptedPwd= passwordEncoder.encode(account.getPassword_hash());
-        account.setPassword_hash(encryptedPwd);
+        String encryptedPwd= passwordEncoder.encode(account.getPassword());
+        account.setPassword(encryptedPwd);
         String username=account.getUsername();
         String email=account.getEmail();
         String phone_number=account.getPhone_number();
@@ -117,54 +121,39 @@ public class AccountServices implements IAccountServices {
      */
     private int checkValidityOfAccountDetailsForRegister(String username, String email, String phone_number) {
         int validityState=0;
-        if(username!=null)
+        String uid_by_uname=accountMapper.findAccountUIdByUsername(username);
+        String uid_by_email=accountMapper.findAccountUIdByEmail(email);
+        String uid_by_phone=accountMapper.findAccountUIdByPhoneNo(phone_number);
+        if(uid_by_uname!=null)
             validityState|=0b001;
-        if(email!=null)
+        if(uid_by_email!=null)
             validityState|=0b010;
-        if(phone_number!=null)
+        if(uid_by_phone!=null)
             validityState|=0b100;
         return validityState;
     }
 
-    /**
-     * Test if updated username, email, phone number exist in database.
-     * @param originalAccountId
-     * @param username
-     * @param email
-     * @param phone_number
-     * @return
-     * 0(0b000) All don't exist
-     * 1(0b001) Username exists within different account
-     * 2(0b010) email exists within different account
-     * 4(0b100) phone number exists within different account
-     * 3(0b011) username,email exist within different account
-     * 5(0b101) phone number, username exist within different account
-     * 6(0b110) phone number, email exist within different account
-     * 7(0b111) All exist within different account
-     */
-    private int checkValidityOfAccountDetailsForUpdate(int originalAccountId,String username, String email, String phone_number) {
-        int validityState=0;
-        int id_by_uname=accountMapper.findAccountIdByUsername(username);
-        int id_by_email=accountMapper.findAccountIdByEmail(email);
-        int id_by_phone=accountMapper.findAccountIdByPhoneNo(phone_number);
-        if(originalAccountId!=id_by_uname)
-            validityState|=0b001;
-        if(id_by_email!=id_by_phone)
-            validityState|=0b010;
-        if(id_by_phone!=id_by_email)
-            validityState|=0b100;
-        return validityState;
-    }
     private boolean doesUsernameExist(String new_username) {
-        int id_by_uname=accountMapper.findAccountIdByUsername(new_username);
-        return id_by_uname!=0;
+        String uid_by_uname=accountMapper.findAccountUIdByUsername(new_username);
+        return uid_by_uname!=null;
     }
     private boolean doesEmailExist(String new_email) {
-        int id_by_email=accountMapper.findAccountIdByEmail(new_email);
-        return id_by_email!=0;
+        String uid_by_email=accountMapper.findAccountUIdByEmail(new_email);
+        return uid_by_email!=null;
     }
     private boolean doesPhoneNumberExist(String new_phone_number) {
-        int id_by_phone=accountMapper.findAccountIdByPhoneNo(new_phone_number);
-        return id_by_phone!=0;
+        String uid_by_phone=accountMapper.findAccountUIdByPhoneNo(new_phone_number);
+        return uid_by_phone!=null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LoginByUsernameDto loginAccount=accountMapper.findLoginAccountByUsername(username);
+        if(loginAccount==null)
+            throw new UsernameNotFoundException(username);
+        return User.withUsername(loginAccount.getUsername())
+                .password(loginAccount.getPassword())
+                .roles("USER")
+                .build();
     }
 }

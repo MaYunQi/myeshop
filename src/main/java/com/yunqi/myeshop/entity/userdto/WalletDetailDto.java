@@ -8,6 +8,5 @@ import java.math.BigDecimal;
 public class WalletDetailDto implements Serializable {
     private String wallet_uid;
     private BigDecimal balance;
-
     public WalletDetailDto() {}
 }

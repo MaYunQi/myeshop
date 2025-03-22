@@ -1,5 +1,6 @@
-====================================
+===========================================================
   My EShop Spring Boot App
   Application Version: ${application.version}
   Spring Boot Version: ${spring-boot.version}
-====================================
+  Spring Security Version: ${spring-security.version}
+===========================================================
