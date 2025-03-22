@@ -1,34 +1,45 @@
 package com.yunqi.myeshop.service.implementation;
 
-import com.yunqi.myeshop.entity.user.Account;
-import com.yunqi.myeshop.entity.userdto.ChangePhoneNoDto;
-import com.yunqi.myeshop.entity.userdto.ChangePwdDto;
-import com.yunqi.myeshop.entity.userdto.ChangeUnameDto;
+import com.yunqi.myeshop.entity.userdto.*;
 import com.yunqi.myeshop.mapper.AccountMapper;
 import com.yunqi.myeshop.service.interfaces.IAccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AccountServices implements IAccountServices {
 
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public Account getAccountByAccountId(int account_id) {
+    public AccountDetailDto getAccountByAccountId(int account_id) {
         return accountMapper.findAccountByAccountId(account_id);
     }
 
     @Override
-    public List<Account> getAllAccounts() {
+    public int loginByUsername(LoginByUsernameDto loginByUsernameDto) {
+        String encryptedPwd = passwordEncoder.encode(loginByUsernameDto.getPassword());
+        loginByUsernameDto.setPassword(encryptedPwd);
+        //To be implemented
+        return 0;
+    }
+
+    @Override
+    public List<AccountDetailDto> getAllAccounts() {
         return accountMapper.findAllAccounts();
     }
 
     @Override
-    public int changePasswordHash(ChangePwdDto changePwdDto) {
+    public int changePassword(ChangePwdDto changePwdDto) {
+        String encryptedPwd = passwordEncoder.encode(changePwdDto.getPassword());
+        changePwdDto.setPassword(encryptedPwd);
         return accountMapper.updateAccountPasswordHash(changePwdDto);
     }
 
@@ -40,11 +51,11 @@ public class AccountServices implements IAccountServices {
     }
 
     @Override
-    public int changeEmail(int account_id, String new_email) {
+    public int changeEmail(ChangeEmailDto changeEmailDto) {
+        String new_email = changeEmailDto.getEmail();
         if(doesEmailExist(new_email))
             return -1;
-        LocalDateTime updated_at = LocalDateTime.now();
-        return accountMapper.updateAccountEmail(account_id, new_email, updated_at);
+        return accountMapper.updateAccountEmail(changeEmailDto);
     }
 
     @Override
@@ -54,19 +65,6 @@ public class AccountServices implements IAccountServices {
         return accountMapper.updateAccountPhoneNumber(changePhoneNoDto);
     }
 
-    @Override
-    public int updateAccount(Account account) {
-        int current_account_id = account.getAccount_id();
-        String username = account.getUsername();
-        String email = account.getEmail();
-        String phone_number = account.getPhone_number();
-        int validity=checkValidityOfAccountDetailsForUpdate(current_account_id,username,email,phone_number);
-        if(validity!=0)
-            return validity;
-        account.setUpdated_at(LocalDateTime.now());
-        return accountMapper.updateAccount(account);
-    }
-
     /**
      * Insert a new account into database
      * @param account
@@ -74,15 +72,27 @@ public class AccountServices implements IAccountServices {
      * 0 for fail to insert, 1 for successfully inserted.
      */
     @Override
-    public int registerAccount(Account account) {
+    public int registerAccount(AccountRegisterDto account) {
+        String encryptedPwd= passwordEncoder.encode(account.getPassword_hash());
+        account.setPassword_hash(encryptedPwd);
         String username=account.getUsername();
         String email=account.getEmail();
         String phone_number=account.getPhone_number();
         int validity=checkValidityOfAccountDetailsForRegister(username,email,phone_number);
         if(validity!=0)
             return validity;
-        account.setCreated_at(LocalDateTime.now());
-        return accountMapper.insertAccount(account);
+        int retryCounter=3;
+        while(retryCounter>0){
+            account.setAccount_uid(UUID.randomUUID().toString());
+            account.setCreated_at(LocalDateTime.now());
+            try{
+                return accountMapper.insertAccount(account);
+            }
+            catch(Exception e){
+                retryCounter--;
+            }
+        }
+        return 0;
     }
 
     @Override

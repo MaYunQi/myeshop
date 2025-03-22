@@ -17,4 +17,5 @@ public class ChangeUnameDto implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updated_at;
+    public ChangeUnameDto() {}
 }

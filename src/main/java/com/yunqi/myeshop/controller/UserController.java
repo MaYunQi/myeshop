@@ -1,36 +1,30 @@
 package com.yunqi.myeshop.controller;
 
 import com.yunqi.myeshop.entity.user.User;
-import com.yunqi.myeshop.service.implementation.UserAggregateServices;
+import com.yunqi.myeshop.entity.userdto.*;
 import com.yunqi.myeshop.service.implementation.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserServices userServices;
-    @Autowired
-    private UserAggregateServices userAggregateServices;
 
     @GetMapping("/{user_id}")
-    public User getUserByUserId(@PathVariable int user_id) {
+    public UserDetailDto getUserByUserId(@PathVariable int user_id) {
         return userServices.getUserByUserId(user_id);
     }
     @GetMapping
-    public List<User> getUsers() {
+    public List<UserDetailDto> getUsers() {
         return userServices.getAllUsers();
     }
     @PostMapping
     public int createUser(@RequestBody User user) {
         return userServices.createUser(user);
-    }
-    @PutMapping
-    public int updateUser(@RequestBody User user) {
-        return userServices.updateUser(user);
     }
     @DeleteMapping("/{id}")
     public int deleteUserById(@PathVariable int user_id) {

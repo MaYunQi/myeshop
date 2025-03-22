@@ -1,15 +1,16 @@
 package com.yunqi.myeshop.service.interfaces;
 
-import com.yunqi.myeshop.entity.user.Wallet;
+import com.yunqi.myeshop.entity.userdto.WalletDetailDto;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface IWalletServices {
-    Wallet getWalletByAccountId(int account_id);
-    Wallet getWalletByWalletId(int wallet_id);
-    Wallet getWalletByWalletUId(String uid);
+    WalletDetailDto getWalletByAccountId(int account_id);
+    WalletDetailDto getWalletByWalletId(int wallet_id);
+    WalletDetailDto getWalletByWalletUId(String uid);
     BigDecimal getWalletBalanceByWalletUId(String wallet_uid);
-    List<Wallet> getAllWallets();
+    List<WalletDetailDto> getAllWallets();
     int createWallet(int account_id);
     int withdraw(String wallet_uid, BigDecimal amount);
     int deposit(String wallet_uid, BigDecimal amount);

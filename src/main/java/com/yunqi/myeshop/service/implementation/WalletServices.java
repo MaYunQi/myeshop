@@ -1,6 +1,7 @@
 package com.yunqi.myeshop.service.implementation;
 
 import com.yunqi.myeshop.entity.user.Wallet;
+import com.yunqi.myeshop.entity.userdto.WalletDetailDto;
 import com.yunqi.myeshop.mapper.WalletMapper;
 import com.yunqi.myeshop.service.interfaces.IWalletServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,22 @@ public class WalletServices implements IWalletServices {
     private WalletMapper walletMapper;
 
     @Override
-    public Wallet getWalletByAccountId(int account_id) {
+    public WalletDetailDto getWalletByAccountId(int account_id) {
         return walletMapper.findWalletByAccountId(account_id);
     }
 
     @Override
-    public Wallet getWalletByWalletId(int wallet_id) {
+    public WalletDetailDto getWalletByWalletId(int wallet_id) {
         return walletMapper.findWalletByWalletId(wallet_id);
     }
 
     @Override
-    public Wallet getWalletByWalletUId(String uid) {
+    public WalletDetailDto getWalletByWalletUId(String uid) {
         return walletMapper.findWalletByWalletUId(uid);
     }
 
     @Override
-    public List<Wallet> getAllWallets() {
+    public List<WalletDetailDto> getAllWallets() {
         return walletMapper.findAllWallets();
     }
 

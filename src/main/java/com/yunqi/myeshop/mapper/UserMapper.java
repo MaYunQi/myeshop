@@ -1,6 +1,7 @@
 package com.yunqi.myeshop.mapper;
 
 import com.yunqi.myeshop.entity.user.User;
+import com.yunqi.myeshop.entity.userdto.*;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 
@@ -11,17 +12,20 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true,keyProperty = "user_id")
     int insertUser(User user);
 
-    @Select("SELECT * FROM tb_users WHERE user_id=#{user_id}")
-    User findUserByUserId(int user_id);
-
     @Select("SELECT user_id FROM tb_users WHERE id_number=#{id_number}")
     int findUserIdByIDNumber(String id_number);
 
-    @Select("SELECT * FROM tb_users")
-    List<User> findAllUsers();
+    @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
+            " FROM tb_users WHERE user_id=#{user_id}")
+    UserDetailDto findUserByUserId(int user_id);
 
-    @Update("UPDATE tb_users SET first_name=#{first_name},last_name=#{last_name},gender=#{gender},date_of_birth=#{date_of_birth} WHERE user_id=#{user_id}")
-    int updateUser(User user);
+    @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
+            " FROM tb_users WHERE account_id=#{account_id}")
+    UserDetailDto findUserByAccountId(int account_id);
+
+    @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
+            " FROM tb_users WHERE user_id=#{user_id}")
+    List<UserDetailDto> findAllUsers();
 
     @Delete("DELETE FROM tb_users WHERE user_id=#{user_id}")
     int deleteUserByUserId(int user_id);

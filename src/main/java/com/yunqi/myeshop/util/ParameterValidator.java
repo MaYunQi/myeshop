@@ -1,5 +1,6 @@
 package com.yunqi.myeshop.util;
 
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public final class ParameterValidator {
@@ -14,7 +15,6 @@ public final class ParameterValidator {
         }
         return pattern.matcher(email).matches();
     }
-
     public static boolean isPhoneNumberValid(String phoneNumber) {
         String phoneRegex = "^1[3-9]\\d{9}$";
         Pattern pattern = Pattern.compile(phoneRegex);
@@ -23,7 +23,6 @@ public final class ParameterValidator {
         }
         return pattern.matcher(phoneNumber).matches();
     }
-
     public static boolean isIdNumberValid(String id_number) {
         if(id_number==null||id_number.length()!=18)
             return false;
@@ -37,7 +36,13 @@ public final class ParameterValidator {
         char expectedLastChar = checkCode.charAt(0);
         return expectedLastChar == lastChar || (expectedLastChar == 'X' && (lastChar == 'X' || lastChar == 'x'));
     }
-
+    public static boolean isPasswordValid(String password) {
+        String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{6,18}$";
+        Pattern pattern = Pattern.compile(PASSWORD_REGEX);
+        if (password == null)
+            return false;
+        return pattern.matcher(password).matches();
+    }
     public static String calculateCheckCode(String first17) {
         int[] weights = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
         char[] checkCodes = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
@@ -47,5 +52,10 @@ public final class ParameterValidator {
         }
         int mod = sum % 11;
         return String.valueOf(checkCodes[mod]);
+    }
+    public static boolean isBirthdayValid(LocalDate birthday) {
+        LocalDate past = LocalDate.of(1920, 1, 1);
+        LocalDate today = LocalDate.now();
+        return birthday.isBefore(today)&&birthday.isAfter(past);
     }
 }

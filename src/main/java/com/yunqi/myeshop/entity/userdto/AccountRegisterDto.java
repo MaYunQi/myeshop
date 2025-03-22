@@ -1,4 +1,4 @@
-package com.yunqi.myeshop.entity.user;
+package com.yunqi.myeshop.entity.userdto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -10,10 +10,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Account implements Serializable {
-    private int account_id;
-    private String account_uid;
+public class AccountRegisterDto implements Serializable {
     private String username;
+    private String account_uid;
     private String password_hash;
     private String email;
     private String phone_number;
@@ -21,14 +20,6 @@ public class Account implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created_at;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updated_at;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime last_login_at;
 
-    public Account() {}
+    public AccountRegisterDto() {}
 }

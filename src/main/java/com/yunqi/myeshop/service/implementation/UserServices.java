@@ -1,8 +1,10 @@
 package com.yunqi.myeshop.service.implementation;
 
 import com.yunqi.myeshop.entity.user.User;
+import com.yunqi.myeshop.entity.userdto.UserDetailDto;
 import com.yunqi.myeshop.mapper.UserMapper;
 import com.yunqi.myeshop.service.interfaces.IUserServices;
+import com.yunqi.myeshop.util.ParameterValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,12 +16,16 @@ public class UserServices implements IUserServices {
 
     @Override
     //@Cacheable(key="#user_id",value = "userCache")
-    public User getUserByUserId(int user_id) {
+    public UserDetailDto getUserByUserId(int user_id) {
         return userMapper.findUserByUserId(user_id);
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public UserDetailDto getUserByAccountId(int account_id){
+        return userMapper.findUserByAccountId(account_id);
+    }
+    @Override
+    public List<UserDetailDto> getAllUsers() {
         return userMapper.findAllUsers();
     }
     /**
@@ -30,17 +36,14 @@ public class UserServices implements IUserServices {
      */
     @Override
     public int createUser(User user) {
-        String idNumber = user.getId_number();
-        if(doesIdNumberExist(idNumber))
+        if(!ParameterValidator.isBirthdayValid(user.getDate_of_birth()))
+            return -1;
+        if(!ParameterValidator.isIdNumberValid(user.getId_number()))
+            return -1;
+        if(doesIdNumberExist(user.getId_number()))
             return -1;
         setGenderOfUser(user);
         return userMapper.insertUser(user);
-    }
-
-    @Override
-    public int updateUser(User user) {
-        setGenderOfUser(user);
-        return userMapper.updateUser(user);
     }
 
     @Override

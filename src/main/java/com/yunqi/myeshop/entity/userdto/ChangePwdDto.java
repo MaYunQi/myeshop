@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 @Data
 public class ChangePwdDto implements Serializable {
     private int account_id;
-    private String password_hash;
+    private String password;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updated_at;
+    public ChangePwdDto() {}
 }

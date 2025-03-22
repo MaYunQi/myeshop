@@ -1,6 +1,7 @@
 package com.yunqi.myeshop.mapper;
 
 import com.yunqi.myeshop.entity.user.Wallet;
+import com.yunqi.myeshop.entity.userdto.*;
 import org.apache.ibatis.annotations.*;
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,17 +14,17 @@ public interface WalletMapper {
     @Options(useGeneratedKeys = true,keyProperty = "wallet_id")
     int insertWallet(Wallet wallet);
 
-    @Select("SELECT * FROM tb_wallets WHERE wallet_id=#{wallet_id}")
-    Wallet findWalletByWalletId(int wallet_id);
+    @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE wallet_id=#{wallet_id}")
+    WalletDetailDto findWalletByWalletId(int wallet_id);
 
-    @Select("SELECT * FROM tb_wallets WHERE wallet_uid=#{wallet_uid}")
-    Wallet findWalletByWalletUId(String wallet_uid);
+    @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE wallet_uid=#{wallet_uid}")
+    WalletDetailDto findWalletByWalletUId(String wallet_uid);
 
-    @Select("SELECT * FROM tb_wallets WHERE account_id=#{account_id}")
-    Wallet findWalletByAccountId(int account_id);
+    @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE account_id=#{account_id}")
+    WalletDetailDto findWalletByAccountId(int account_id);
 
-    @Select("SELECT * FROM tb_wallets")
-    List<Wallet> findAllWallets();
+    @Select("SELECT wallet_uid, balance FROM tb_wallets")
+    List<WalletDetailDto> findAllWallets();
 
     @Select("SELECT balance FROM tb_wallets where wallet_id=#{wallet_id}")
     BigDecimal findWalletBalanceByWalletId(int wallet_id);

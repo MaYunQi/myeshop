@@ -10,12 +10,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class ChangePhoneNoDto implements Serializable {
-    private int account_id;
-    private String phone_number;
+public class LoginByUsernameDto implements Serializable {
+    private String username;
+    private String password;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updated_at;
-    public ChangePhoneNoDto() {}
+    private LocalDateTime last_login_at;
+    public LoginByUsernameDto() {}
 }
