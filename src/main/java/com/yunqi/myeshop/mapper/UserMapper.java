@@ -6,7 +6,8 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("INSERT INTO tb_users (first_name,last_name,id_number,gender,date_of_birth) VALUES  (#{first_name},#{last_name},#{id_number},#{gender},#{date_of_birth})")
+    @Insert("INSERT INTO tb_users (account_id,first_name,last_name,id_number,gender,date_of_birth) VALUES  " +
+            "(#{account_id}, #{first_name},#{last_name},#{id_number},#{gender},#{date_of_birth})")
     @Options(useGeneratedKeys = true,keyProperty = "user_id")
     int insertUser(User user);
 

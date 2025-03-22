@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Data
 public class User implements Serializable {
     private int user_id;
+    private int account_id;
     private String first_name;
     private String last_name;
     private String id_number;
@@ -22,5 +23,4 @@ public class User implements Serializable {
     private LocalDate date_of_birth;
 
     public User() {}
-
 }

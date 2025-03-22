@@ -21,13 +21,10 @@ public class WalletController {
         return walletServices.getAllWallets();
     }
     @PostMapping
-    public int createWallet(@RequestBody Wallet wallet) {
-        return walletServices.addWallet(wallet);
+    public int createWallet(@RequestBody int account_id) {
+        return walletServices.createWallet(account_id);
     }
-    @PutMapping
-    public int updateWallet(@RequestBody Wallet wallet) {
-        return walletServices.updateWallet(wallet);
-    }
+
     @DeleteMapping
     public int deleteWallet(@RequestBody Wallet wallet) {
         return walletServices.deleteWallet(wallet.getWallet_id());

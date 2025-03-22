@@ -2,6 +2,7 @@ package com.yunqi.myeshop.mapper;
 
 import com.yunqi.myeshop.entity.user.Wallet;
 import org.apache.ibatis.annotations.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -24,8 +25,13 @@ public interface WalletMapper {
     @Select("SELECT * FROM tb_wallets")
     List<Wallet> findAllWallets();
 
+    @Select("SELECT balance FROM tb_wallets where wallet_id=#{wallet_id}")
+    BigDecimal findWalletBalanceByWalletId(int wallet_id);
+    @Select("SELECT balance FROM tb_wallets where wallet_uid=#{wallet_uid}")
+    BigDecimal findWalletBalanceByWalletUId(String wallet_uid);
+
     @Update("UPDATE tb_wallets SET balance=#{balance} WHERE wallet_uid=#{wallet_uid}")
-    int updateWallet(Wallet wallet);
+    int updateWallet(String wallet_uid, BigDecimal balance);
 
     @Delete("DELETE  FROM tb_wallets WHERE wallet_id=#{wallet_id}")
     int deleteWalletByWalletId(int wallet_id);
