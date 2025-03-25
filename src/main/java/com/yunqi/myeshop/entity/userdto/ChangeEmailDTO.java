@@ -10,16 +10,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class AccountRegisterDto implements Serializable {
-    private String username;
-    private String account_uid;
-    private String password;
+public class ChangeEmailDTO implements Serializable {
+    private int account_id;
     private String email;
-    private String phone_number;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime created_at;
-
-    public AccountRegisterDto() {}
+    private LocalDateTime updated_at;
+    public ChangeEmailDTO() {}
 }

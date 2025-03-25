@@ -1,9 +1,6 @@
 package com.yunqi.myeshop.service.implementation;
 
 import com.yunqi.myeshop.entity.user.UserAggregate;
-import com.yunqi.myeshop.entity.userdto.AccountDetailDto;
-import com.yunqi.myeshop.entity.userdto.UserDetailDto;
-import com.yunqi.myeshop.entity.userdto.WalletDetailDto;
 import com.yunqi.myeshop.service.interfaces.IUserAggregateServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

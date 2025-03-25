@@ -1,24 +1,25 @@
 package com.yunqi.myeshop.controller;
 
 import com.yunqi.myeshop.entity.user.Wallet;
-import com.yunqi.myeshop.entity.userdto.WalletDetailDto;
+import com.yunqi.myeshop.entity.userdto.WalletDetailDTO;
 import com.yunqi.myeshop.service.implementation.WalletServices;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/wallet")
+@RequiredArgsConstructor
 public class WalletController {
-    @Autowired
-    private WalletServices walletServices;
+
+    private final WalletServices walletServices;
 
     @GetMapping("/{wallet_id}")
-    public WalletDetailDto getWalletByWalletId(@PathVariable int wallet_id) {
+    public WalletDetailDTO getWalletByWalletId(@PathVariable int wallet_id) {
         return walletServices.getWalletByWalletId(wallet_id);
     }
     @GetMapping
-    public List<WalletDetailDto> getWallets() {
+    public List<WalletDetailDTO> getWallets() {
         return walletServices.getAllWallets();
     }
     @PostMapping

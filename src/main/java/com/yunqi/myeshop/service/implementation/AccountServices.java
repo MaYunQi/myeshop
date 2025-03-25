@@ -1,61 +1,65 @@
 package com.yunqi.myeshop.service.implementation;
 
+import com.yunqi.myeshop.entity.user.Account;
 import com.yunqi.myeshop.entity.userdto.*;
 import com.yunqi.myeshop.mapper.AccountMapper;
 import com.yunqi.myeshop.service.interfaces.IAccountServices;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.yunqi.myeshop.util.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class AccountServices implements IAccountServices, UserDetailsService {
+@RequiredArgsConstructor
+public class AccountServices implements IAccountServices{
 
-    @Autowired
-    private AccountMapper accountMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AccountMapper accountMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
     @Override
-    public AccountDetailDto getAccountByAccountId(int account_id) {
+    public AccountDetailDTO getAccountByAccountId(int account_id) {
         return accountMapper.findAccountByAccountId(account_id);
     }
 
     @Override
-    public int loginByUsername(LoginByUsernameDto loginByUsernameDto) {
+    public Optional<String> loginByUsername(LoginByUsernameDTO loginByUsernameDto) {
         String encryptedPwd = passwordEncoder.encode(loginByUsernameDto.getPassword());
-        loginByUsernameDto.setPassword(encryptedPwd);
-        //To be implemented
-        return 0;
+        Account account=accountMapper.findAccountByUsername(loginByUsernameDto.getUsername());
+        if(account!=null&&passwordEncoder.matches(encryptedPwd,account.getPassword_hash())){
+            accountMapper.updateLoginTime(account.getAccount_id(),LocalDateTime.now());
+            AccountJwtDTO accountJwtDTO=new AccountJwtDTO();
+            copyAccountToJwtDTO(account,accountJwtDTO);
+            return Optional.of(jwtUtils.generateToken(accountJwtDTO));
+        }
+        return Optional.empty();
     }
 
     @Override
-    public List<AccountDetailDto> getAllAccounts() {
+    public List<AccountDetailDTO> getAllAccounts() {
         return accountMapper.findAllAccounts();
     }
 
     @Override
-    public int changePassword(ChangePwdDto changePwdDto) {
+    public int changePassword(ChangePwdDTO changePwdDto) {
         String encryptedPwd = passwordEncoder.encode(changePwdDto.getPassword());
         changePwdDto.setPassword(encryptedPwd);
         return accountMapper.updateAccountPasswordHash(changePwdDto);
     }
 
     @Override
-    public int changeUsername(ChangeUnameDto changeUnameDto) {
+    public int changeUsername(ChangeUnameDTO changeUnameDto) {
         if(doesUsernameExist(changeUnameDto.getUsername()))
             return -1;
         return accountMapper.updateAccountUsername(changeUnameDto);
     }
 
     @Override
-    public int changeEmail(ChangeEmailDto changeEmailDto) {
+    public int changeEmail(ChangeEmailDTO changeEmailDto) {
         String new_email = changeEmailDto.getEmail();
         if(doesEmailExist(new_email))
             return -1;
@@ -63,7 +67,7 @@ public class AccountServices implements IAccountServices, UserDetailsService {
     }
 
     @Override
-    public int changePhoneNumber(ChangePhoneNoDto changePhoneNoDto) {
+    public int changePhoneNumber(ChangePhoneNoDTO changePhoneNoDto) {
         if(doesPhoneNumberExist(changePhoneNoDto.getPhone_number()))
             return -1;
         return accountMapper.updateAccountPhoneNumber(changePhoneNoDto);
@@ -76,7 +80,7 @@ public class AccountServices implements IAccountServices, UserDetailsService {
      * 0 for fail to insert, 1 for successfully inserted.
      */
     @Override
-    public int registerAccount(AccountRegisterDto account) {
+    public int registerAccount(AccountRegisterDTO account) {
         String encryptedPwd= passwordEncoder.encode(account.getPassword());
         account.setPassword(encryptedPwd);
         String username=account.getUsername();
@@ -145,15 +149,11 @@ public class AccountServices implements IAccountServices, UserDetailsService {
         String uid_by_phone=accountMapper.findAccountUIdByPhoneNo(new_phone_number);
         return uid_by_phone!=null;
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginByUsernameDto loginAccount=accountMapper.findLoginAccountByUsername(username);
-        if(loginAccount==null)
-            throw new UsernameNotFoundException(username);
-        return User.withUsername(loginAccount.getUsername())
-                .password(loginAccount.getPassword())
-                .roles("USER")
-                .build();
+    private void copyAccountToJwtDTO(Account from,AccountJwtDTO accountJwtDTO)
+    {
+        accountJwtDTO.setAccount_id(from.getAccount_id());
+        accountJwtDTO.setAccount_uid(from.getAccount_uid());
+        accountJwtDTO.setUsername(from.getUsername());
+        accountJwtDTO.setRole(from.getRole());
     }
 }

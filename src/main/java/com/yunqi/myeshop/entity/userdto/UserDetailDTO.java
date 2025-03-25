@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class UserDetailDto implements Serializable {
+public class UserDetailDTO implements Serializable {
     private String first_name;
     private String last_name;
     private String gender;
@@ -19,5 +19,5 @@ public class UserDetailDto implements Serializable {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date_of_birth;
 
-    public UserDetailDto() {}
+    public UserDetailDTO() {}
 }

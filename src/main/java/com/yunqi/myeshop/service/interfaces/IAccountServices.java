@@ -3,15 +3,16 @@ package com.yunqi.myeshop.service.interfaces;
 import com.yunqi.myeshop.entity.userdto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IAccountServices {
-    AccountDetailDto getAccountByAccountId(int account_id);
-    List<AccountDetailDto> getAllAccounts();
-    int changePassword(ChangePwdDto changePwdDto);
-    int changeEmail(ChangeEmailDto changeEmailDto);
-    int changePhoneNumber(ChangePhoneNoDto changePhoneNoDto);
-    int changeUsername(ChangeUnameDto changeUnameDto);
-    int registerAccount(AccountRegisterDto account);
+    AccountDetailDTO getAccountByAccountId(int account_id);
+    List<AccountDetailDTO> getAllAccounts();
+    int changePassword(ChangePwdDTO changePwdDto);
+    int changeEmail(ChangeEmailDTO changeEmailDto);
+    int changePhoneNumber(ChangePhoneNoDTO changePhoneNoDto);
+    int changeUsername(ChangeUnameDTO changeUnameDto);
+    int registerAccount(AccountRegisterDTO account);
     int deleteAccountByAccountId(int account_id);
-    int loginByUsername(LoginByUsernameDto loginByUsernameDto);
+    Optional<String> loginByUsername(LoginByUsernameDTO loginByUsernameDto);
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Account implements Serializable {
+public class Account implements Serializable{
     private int account_id;
     private String account_uid;
     private String username;
@@ -29,6 +29,8 @@ public class Account implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime last_login_at;
+    private String role;
 
     public Account() {}
+
 }

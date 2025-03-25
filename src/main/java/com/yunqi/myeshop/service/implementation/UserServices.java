@@ -1,31 +1,32 @@
 package com.yunqi.myeshop.service.implementation;
 
 import com.yunqi.myeshop.entity.user.User;
-import com.yunqi.myeshop.entity.userdto.UserDetailDto;
+import com.yunqi.myeshop.entity.userdto.UserDetailDTO;
 import com.yunqi.myeshop.mapper.UserMapper;
 import com.yunqi.myeshop.service.interfaces.IUserServices;
 import com.yunqi.myeshop.util.ParameterValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServices implements IUserServices {
-    @Autowired
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper;
 
     @Override
     //@Cacheable(key="#user_id",value = "userCache")
-    public UserDetailDto getUserByUserId(int user_id) {
+    public UserDetailDTO getUserByUserId(int user_id) {
         return userMapper.findUserByUserId(user_id);
     }
 
     @Override
-    public UserDetailDto getUserByAccountId(int account_id){
+    public UserDetailDTO getUserByAccountId(int account_id){
         return userMapper.findUserByAccountId(account_id);
     }
     @Override
-    public List<UserDetailDto> getAllUsers() {
+    public List<UserDetailDTO> getAllUsers() {
         return userMapper.findAllUsers();
     }
     /**

@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class WalletDetailDto implements Serializable {
+public class WalletDetailDTO implements Serializable {
     private String wallet_uid;
     private BigDecimal balance;
-    public WalletDetailDto() {}
+    public WalletDetailDTO() {}
 }

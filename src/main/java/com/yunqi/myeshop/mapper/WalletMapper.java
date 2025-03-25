@@ -15,16 +15,16 @@ public interface WalletMapper {
     int insertWallet(Wallet wallet);
 
     @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE wallet_id=#{wallet_id}")
-    WalletDetailDto findWalletByWalletId(int wallet_id);
+    WalletDetailDTO findWalletByWalletId(int wallet_id);
 
     @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE wallet_uid=#{wallet_uid}")
-    WalletDetailDto findWalletByWalletUId(String wallet_uid);
+    WalletDetailDTO findWalletByWalletUId(String wallet_uid);
 
     @Select("SELECT wallet_uid, balance FROM tb_wallets WHERE account_id=#{account_id}")
-    WalletDetailDto findWalletByAccountId(int account_id);
+    WalletDetailDTO findWalletByAccountId(int account_id);
 
     @Select("SELECT wallet_uid, balance FROM tb_wallets")
-    List<WalletDetailDto> findAllWallets();
+    List<WalletDetailDTO> findAllWallets();
 
     @Select("SELECT balance FROM tb_wallets where wallet_id=#{wallet_id}")
     BigDecimal findWalletBalanceByWalletId(int wallet_id);

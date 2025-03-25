@@ -16,4 +16,8 @@ spring:
       timeout: 5000
       database: 0
 
+jwt:
+  secret: "My Secret Key"
+  expiration: 86400000  #(24H)
+
 

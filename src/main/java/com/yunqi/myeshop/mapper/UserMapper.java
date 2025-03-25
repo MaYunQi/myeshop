@@ -17,15 +17,15 @@ public interface UserMapper {
 
     @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
             " FROM tb_users WHERE user_id=#{user_id}")
-    UserDetailDto findUserByUserId(int user_id);
+    UserDetailDTO findUserByUserId(int user_id);
 
     @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
             " FROM tb_users WHERE account_id=#{account_id}")
-    UserDetailDto findUserByAccountId(int account_id);
+    UserDetailDTO findUserByAccountId(int account_id);
 
     @Select("SELECT account_id,first_name,last_name,gender,date_of_birth" +
             " FROM tb_users WHERE user_id=#{user_id}")
-    List<UserDetailDto> findAllUsers();
+    List<UserDetailDTO> findAllUsers();
 
     @Delete("DELETE FROM tb_users WHERE user_id=#{user_id}")
     int deleteUserByUserId(int user_id);
